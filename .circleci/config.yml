@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@2.1.2
+  gcp-cli: circleci/gcp-cli@2.4.1
+
+jobs:
+  release-build:
+    executor:
+      name: android/android-docker
+      tag: 2022.08.1
+    steps:
+      - checkout
+      - android/restore-gradle-cache
+      - run:
+          name: Assemble release build
+          command: |
+            ./gradlew assembleRelease
+      - store_artifacts:
+          path: app/build/outputs/apk/release/app-prd-release-unsigned.apk
+
+workflows:
+  test-and-build:
+    jobs:
+      - release-build:
+          filters:
+            branches:
+              only: main # Commits to main branch
