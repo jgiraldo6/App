@@ -31,9 +31,9 @@ jobs:
     steps:
       - checkout
       - persist_to_workspace:
-        root: ~/project
-        paths:
-          - .
+          root: ~/project
+          paths:
+            - .
       - android/restore-gradle-cache
       - run:
           name: Assemble release build
