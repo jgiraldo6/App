@@ -30,15 +30,16 @@ jobs:
       tag: 2022.08.1
     steps:
       - checkout
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
+
       - android/restore-gradle-cache
       - run:
           name: Assemble release build
           command: |
             ./gradlew assembleDevDebug
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
       - store_artifacts:
           path: app/build/outputs/apk/debug/app-dev-debug.apk
 
