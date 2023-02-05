@@ -30,7 +30,7 @@ jobs:
       name: android/android-docker
       tag: 2022.08.1
     steps:
-      - run: mkdir -p workspace
+      - run: mkdir -p workspace/app
       - persist_to_workspace:
           root: workspace
           paths:
