@@ -10,9 +10,6 @@ jobs:
     docker:
       - image: "cimg/python:3.10"
     steps:
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: ~/app
       - aws-s3/sync:
           aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
           aws-region: AWS_REGION_BLUE
@@ -30,10 +27,6 @@ jobs:
       tag: 2022.08.1
     steps:
       - checkout
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - app
       - android/restore-gradle-cache
       - run:
           name: Assemble release build
