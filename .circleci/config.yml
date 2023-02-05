@@ -17,7 +17,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
           aws-region: AWS_REGION_BLUE
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
-          from: ~/project
+          from: ~/project/app/build/outputs/apk/dev/debug/
           to: "s3://deploy-app-vendedor"
 
   release-build:
@@ -36,7 +36,7 @@ jobs:
           paths:
             - .
       - store_artifacts:
-          path: app/build/outputs/apk/debug/app-dev-debug.apk
+          path: app/build/outputs/apk/dev/debug/app-dev-debug.apk
 
 workflows:
   test-and-build:
