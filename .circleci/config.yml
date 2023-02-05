@@ -43,8 +43,8 @@ jobs:
           root: ~/project
           paths:
             - .
-      # - store_artifacts:
-      #     path: app/build/outputs/apk/debug/app-dev-debug.apk
+      - store_artifacts:
+          path: app/build/outputs/apk/debug/app-dev-debug.apk
 
 workflows:
   test-and-build:
