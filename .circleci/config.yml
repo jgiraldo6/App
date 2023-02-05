@@ -3,8 +3,28 @@ version: 2.1
 orbs:
   android: circleci/android@2.1.2
   gcp-cli: circleci/gcp-cli@2.4.1
+  aws-s3: circleci/aws-s3@3.1
 
 jobs:
+  deploy:
+    docker:
+      - image: "cimg/python:3.10"
+    steps:
+      - checkout
+      - aws-s3/sync:
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
+          aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
+          aws-region: AWS_REGION_BLUE
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
+          from: app/build/outputs/apk/debug
+          to: "s3://deploy-app-vendedor/prefix"
+      - aws-s3/copy:
+          arguments: "--dryrun"
+          from: app/build/outputs/apk/debug/app-dev-debug-unsigned.apk
+          install-aws-cli: false
+          to: "s3://deploy-app-vendedor"
   release-build:
     executor:
       name: android/android-docker
@@ -15,9 +35,9 @@ jobs:
       - run:
           name: Assemble release build
           command: |
-            ./gradlew assembleRelease
+            ./gradlew assembleDevDebug
       - store_artifacts:
-          path: app/build/outputs/apk/release/app-prd-release-unsigned.apk
+          path: app/build/outputs/apk/debug/app-dev-debug-unsigned.apk
 
 workflows:
   test-and-build:
@@ -26,3 +46,4 @@ workflows:
           filters:
             branches:
               only: main # Commits to main branch
+      - deploy
