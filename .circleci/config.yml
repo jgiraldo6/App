@@ -26,6 +26,7 @@ jobs:
           install-aws-cli: false
           to: "s3://deploy-app-vendedor"
   release-build:
+    working_directory: ~/workspace/app
     executor:
       name: android/android-docker
       tag: 2022.08.1
