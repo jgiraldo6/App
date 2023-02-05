@@ -17,11 +17,11 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
           aws-region: AWS_REGION_BLUE
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
-          from: ~/app/build/outputs/apk/debug
+          from: ~/project/app/build/outputs/apk/debug
           to: "s3://deploy-app-vendedor/prefix"
       - aws-s3/copy:
           arguments: "--dryrun"
-          from: ~/app/build/outputs/apk/debug/app-dev-debug.apk
+          from: ~/project/app/build/outputs/apk/debug/app-dev-debug.apk
           install-aws-cli: false
           to: "s3://deploy-app-vendedor"
   release-build:
