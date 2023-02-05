@@ -12,8 +12,7 @@ jobs:
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /tmp/workspace
-      - checkout
+          at: ~/app
       - aws-s3/sync:
           aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
           aws-region: AWS_REGION_BLUE
@@ -26,17 +25,15 @@ jobs:
           install-aws-cli: false
           to: "s3://deploy-app-vendedor"
   release-build:
-    working_directory: ~/workspace/app
     executor:
       name: android/android-docker
       tag: 2022.08.1
     steps:
-      - run: mkdir -p workspace/app
+      - checkout
       - persist_to_workspace:
-          root: workspace
+          root: ~/
           paths:
             - app
-      - checkout
       - android/restore-gradle-cache
       - run:
           name: Assemble release build
