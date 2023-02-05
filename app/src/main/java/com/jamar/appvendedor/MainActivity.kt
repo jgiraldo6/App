@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name! - Stage ${BuildConfig.STAGE} - Version ${BuildConfig.VERSION_NAME}")
+    Text(text = "Hello, $name! - Stage ${BuildConfig.STAGE} - Version ${BuildConfig.VERSION_NAME}")
 }
 
 @Preview(showBackground = true)
