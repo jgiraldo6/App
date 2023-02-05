@@ -13,21 +13,13 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ~/project
-      - run:
-          name: ver archivos
-          command: |
-            ls project
       - aws-s3/sync:
           aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
           aws-region: AWS_REGION_BLUE
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
-          from: ~/project/app/build/outputs/apk/debug
-          to: "s3://deploy-app-vendedor/prefix"
-      - aws-s3/copy:
-          arguments: "--dryrun"
-          from: ~/project/app/build/outputs/apk/debug/app-dev-debug.apk
-          install-aws-cli: false
+          from: ~/project
           to: "s3://deploy-app-vendedor"
+
   release-build:
     executor:
       name: android/android-docker
@@ -35,10 +27,10 @@ jobs:
     steps:
       - checkout
       - android/restore-gradle-cache
-      # - run:
-      #     name: Assemble release build
-      #     command: |
-      #       ./gradlew assembleDevDebug
+      - run:
+          name: Assemble release build
+          command: |
+            ./gradlew assembleDevDebug
       - persist_to_workspace:
           root: ~/project
           paths:
