@@ -32,8 +32,6 @@ jobs:
     steps:
       - persist_to_workspace:
           root: /tmp
-          paths:
-            - /
       - checkout
       - android/restore-gradle-cache
       - run:
