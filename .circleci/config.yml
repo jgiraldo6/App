@@ -10,6 +10,9 @@ jobs:
     docker:
       - image: "cimg/python:3.10"
     steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp
       - checkout
       - aws-s3/sync:
           aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
@@ -19,7 +22,7 @@ jobs:
           to: "s3://deploy-app-vendedor/prefix"
       - aws-s3/copy:
           arguments: "--dryrun"
-          from: app/build/outputs/apk/debug/app-dev-debug-unsigned.apk
+          from: app/build/outputs/apk/debug/app-dev-debug.apk
           install-aws-cli: false
           to: "s3://deploy-app-vendedor"
   release-build:
@@ -27,6 +30,10 @@ jobs:
       name: android/android-docker
       tag: 2022.08.1
     steps:
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - /
       - checkout
       - android/restore-gradle-cache
       - run:
@@ -34,7 +41,7 @@ jobs:
           command: |
             ./gradlew assembleDevDebug
       - store_artifacts:
-          path: app/build/outputs/apk/debug/app-dev-debug-unsigned.apk
+          path: app/build/outputs/apk/debug/app-dev-debug.apk
 
 workflows:
   test-and-build:
